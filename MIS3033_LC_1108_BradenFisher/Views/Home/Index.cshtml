@@ -1,0 +1,83 @@
+﻿<html>
+
+<head>
+    <title>Braden Fisher MIS 3033</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <!-- charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Data table -->
+    <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+    <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+
+    <!-- Animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+    <!-- Map -->
+    <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- sweetalert2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.8.0/sweetalert2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.8.0/sweetalert2.all.min.js"></script>
+
+
+    <link href="https://juxinglong.github.io/static/MIS3033.css" rel="stylesheet" />
+</head>
+
+<body style="margin:20px;">
+    <script>
+        "use strict";
+        var rootPath = '@Url.Content("~/")';// get the root path of the web app
+    </script>
+    If no name in the title 10% will deducted
+
+    <div id="table">
+
+    </div>
+    <script>
+        "use strict";
+        var grid = null;// table variable
+        var g;
+
+        async function ShowTable() {
+            // fetch the data and show in the table
+            if(grid != null)
+            {
+                grid.destroy();
+            }
+
+            let table = document.querySelector("#table");
+            // add something here
+            table.innerHTML = "";// clean everything inside the table div
+
+            let r = await fetch(rootPath + "home/getstus",{cache:"no-store"});
+            let rj = await r.json();
+
+            g = rj;
+
+            let params = {
+                data: rj,
+                pagination: {limit:5},
+                search: true,
+                sort: true,
+                width: 600,
+                columns: [{ id: "id", name: "Student ID" }, { id: "name", name: "Name" }, { id: "dob", name: "DOB" }]
+            };
+
+            grid = new gridjs.Grid(params);
+            grid.render(table);
+        }// end of function showtable
+
+        ShowTable();
+    </script>
+</body>
+
+
+</html>
