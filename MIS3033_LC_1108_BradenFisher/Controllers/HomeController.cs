@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MIS3033_LC_1108_BradenFisher.Data;
 using MIS3033_LC_1108_BradenFisher.Models;
 
@@ -12,7 +13,7 @@ namespace MIS3033_LC_1108_BradenFisher.Controllers
         {
             Student stu;// complex
             stu = new Student();
-            stu.Id = id;    
+            stu.Id = id;
             stu.Name = name;
             //stu.DOB = dob.ToLocalTime();// 
             stu.DOB = dob.ToUniversalTime();// 
@@ -28,12 +29,13 @@ namespace MIS3033_LC_1108_BradenFisher.Controllers
 
         public JsonResult GetStus()
         {
-            var r = db.Students;
+            var r = db.Students.Select(x => new { id = x.Id, name = x.Name, dob = x.DOB.ToString("MMMM dd, yyyy") });
             return Json(r);
         }
+
         public IActionResult Index()
         {
             return View();
         }
-    }
+    }           
 }
